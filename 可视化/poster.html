@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>丝路热度数据观察 - 海报</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{display:flex;justify-content:center;align-items:flex-start;min-height:100vh;background:#e8ddd0;padding:20px}
+.poster{width:840px;min-height:1300px;background:linear-gradient(175deg,#fffdf7 0%,#faf7f0 15%,#f5f0e8 35%,#faf7f0 60%,#fffdf7 100%);padding:52px 44px;position:relative;overflow:hidden;box-shadow:0 8px 48px rgba(0,0,0,0.1);border-radius:4px}
+.poster>*{position:relative;z-index:1}
+.p-header{text-align:center;margin-bottom:30px;padding-bottom:22px;border-bottom:2px solid #e8d5a0}
+.p-header .tag{display:inline-block;padding:5px 20px;border:2px solid #d4a050;border-radius:20px;color:#b8860b;font-size:12px;letter-spacing:4px;margin-bottom:14px;background:#fffdf7}
+.p-header h1{font-size:42px;font-weight:900;color:#2a1f0e;margin-bottom:6px;letter-spacing:5px}
+.p-header h1 .gold{color:#b8860b}
+.p-header .sub{font-size:14px;color:#8a7a60;letter-spacing:3px}
+.cards-row{display:flex;gap:14px;margin-bottom:28px;flex-wrap:wrap}
+.c-card{flex:1;min-width:140px;text-align:center;padding:16px 12px;background:#fff;border-radius:12px;box-shadow:0 1px 8px rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.04)}
+.c-card .cnum{font-size:28px;font-weight:900;color:#b8860b;display:block;line-height:1.2}
+.c-card .clbl{font-size:11px;color:#8a7a60;margin-top:3px}
+.chart-box{background:#fff;border-radius:14px;padding:16px;margin-bottom:18px;box-shadow:0 1px 8px rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.04)}
+.chart-box .ctitle{font-size:14px;color:#2a1f0e;font-weight:700;margin-bottom:3px}
+.chart-box .cnote{font-size:10px;color:#9a8a6a;margin-bottom:8px}
+.ch-inner{width:100%;height:280px}
+.row2{display:flex;gap:18px}.row2>*{flex:1}
+.insight-row{display:flex;gap:14px;margin:20px 0}
+.insight{flex:1;padding:16px 18px;background:#fff;border-radius:10px;border-left:3px solid #d4a050;box-shadow:0 1px 6px rgba(0,0,0,0.03)}
+.insight.blue{border-left-color:#5b9bd5}
+.insight.green{border-left-color:#7bc47f}
+.insight h4{color:#b8860b;font-size:12px;margin-bottom:4px}
+.insight p{color:#6b5e4a;font-size:11px;line-height:1.7}
+.insight .hl{color:#b8860b;font-weight:700}
+.img-strip{display:flex;gap:14px;margin-bottom:20px}
+.img-strip .img-box{flex:1;padding:18px 16px;border-radius:12px;text-align:center;color:#fff;font-weight:700;font-size:13px}
+.img-strip .img-box.dh{background:linear-gradient(135deg,#d4a050,#8b6914)}
+.img-strip .img-box.zy{background:linear-gradient(135deg,#e87830,#5a8a3a)}
+.img-strip .img-box.lz{background:linear-gradient(135deg,#ffa050,#6a4a2a)}
+.p-footer{text-align:center;margin-top:24px;padding-top:18px;border-top:1px solid #e8d5a0}
+.p-footer p{color:#8a7a60;font-size:10px;line-height:2}
+@media print{body{background:#fff}.poster{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="poster" id="poster">
+  <div class="p-header"><div class="tag">数 据 新 闻 · 信 息 海 报</div><h1><span class="gold">丝路热度</span>数据观察</h1><div class="sub">近五年甘肃各地旅游客流、消费与客源地变迁 · 2019-2024</div></div>
+  <div class="cards-row"><div class="c-card"><span class="cnum">2.09亿</span><span class="clbl">三城五年游客总量</span></div><div class="c-card"><span class="cnum">3875</span><span class="clbl">旅游总收入(亿元)</span></div><div class="c-card"><span class="cnum">15.8%</span><span class="clbl">客流较2019增幅</span></div><div class="c-card"><span class="cnum">+72%</span><span class="clbl">敦煌人均消费涨幅</span></div><div class="c-card"><span class="cnum">8.5:1</span><span class="clbl">敦煌淡旺季客流比</span></div></div>
+  <div class="img-strip">
+    <div class="img-box dh">🏯<br>敦煌·莫高窟<br><span style="font-size:10px;font-weight:400;opacity:0.8">世界文化遗产</span></div>
+    <div class="img-box zy">🏔️<br>张掖·七彩丹霞<br><span style="font-size:10px;font-weight:400;opacity:0.8">世界地质公园</span></div>
+    <div class="img-box lz">🌉<br>兰州·黄河之滨<br><span style="font-size:10px;font-weight:400;opacity:0.8">西北交通枢纽</span></div>
+  </div>
+  <div class="chart-box"><div class="ctitle">🔥 敦煌月度旅游热度热力图 (2019-2024)</div><div class="cnote">颜色越暖热度越高 · 暑期7-8月为绝对旺季</div><div class="ch-inner" id="ch-heat"></div></div>
+  <div class="row2">
+    <div class="chart-box"><div class="ctitle">📈 2024年月度客流走势</div><div class="ch-inner" id="ch-line"></div></div>
+    <div class="chart-box"><div class="ctitle">💰 人均消费年度变化</div><div class="ch-inner" id="ch-bar"></div></div>
+  </div>
+  <div class="chart-box"><div class="ctitle">🌏 客源迁徙流向图</div><div class="cnote">线条粗细=客流量 · 敦煌辐射全国 · 张掖自驾为主 · 兰州枢纽最均衡</div><div class="ch-inner" id="ch-sankey"></div></div>
+  <div class="insight-row">
+    <div class="insight"><h4>🏯 敦煌·全国性IP</h4><p>华东客源28%，飞机出行68%。人均消费1520→<span class="hl">2620元(+72%)</span></p></div>
+    <div class="insight blue"><h4>🏔️ 张掖·自驾天堂</h4><p>陕川宁占56%，<span class="hl">自驾比例62%</span>。丹霞民宿集群带动消费翻倍</p></div>
+    <div class="insight green"><h4>🌉 兰州·西北会客厅</h4><p>人均消费750→<span class="hl">1380元(+84%)</span>，从过路站变身目的地</p></div>
+  </div>
+  <div class="chart-box"><div class="ctitle">📊 三城旅游恢复指数 (2019=100)</div><div class="ch-inner" id="ch-recovery"></div></div>
+  <div class="p-footer"><p>数据来源：甘肃省文化和旅游厅 · 各市州统计局 · 携程/美团/马蜂窝公开数据（模拟）</p><p>数据新闻课程作品 © 2025 | ECharts 5.5 · HTML5 · CSS3</p></div>
+</div>
+<script>
+const dhCSV=`年份,月份,游客接待量_万人,人均消费_元\n2019,1,8.2,1520\n2019,2,10.5,1580\n2019,3,18.7,1620\n2019,4,45.3,1780\n2019,5,82.6,1950\n2019,6,105.4,2100\n2019,7,168.3,2350\n2019,8,195.7,2480\n2019,9,142.5,2280\n2019,10,128.9,2050\n2019,11,32.4,1680\n2019,12,12.8,1550\n2020,1,2.1,1320\n2020,2,1.5,1280\n2020,3,3.8,1350\n2020,4,15.2,1520\n2020,5,38.5,1680\n2020,6,62.3,1820\n2020,7,98.6,2050\n2020,8,112.3,2150\n2020,9,78.9,1980\n2020,10,68.4,1780\n2020,11,15.6,1480\n2020,12,5.2,1380\n2021,1,4.8,1420\n2021,2,6.2,1480\n2021,3,12.5,1560\n2021,4,38.6,1720\n2021,5,72.3,1880\n2021,6,95.8,2050\n2021,7,148.6,2250\n2021,8,178.2,2380\n2021,9,125.3,2180\n2021,10,108.7,1980\n2021,11,28.5,1620\n2021,12,9.8,1480\n2022,1,3.2,1380\n2022,2,3.8,1420\n2022,3,6.5,1480\n2022,4,18.2,1580\n2022,5,35.6,1720\n2022,6,78.5,1950\n2022,7,138.2,2180\n2022,8,165.3,2320\n2022,9,115.8,2100\n2022,10,98.2,1920\n2022,11,22.3,1550\n2022,12,6.5,1420\n2023,1,9.5,1520\n2023,2,12.8,1580\n2023,3,25.6,1680\n2023,4,52.3,1820\n2023,5,88.6,1980\n2023,6,112.5,2180\n2023,7,178.5,2420\n2023,8,208.6,2580\n2023,9,152.3,2350\n2023,10,135.8,2120\n2023,11,38.5,1750\n2023,12,15.2,1580\n2024,1,11.2,1580\n2024,2,14.5,1620\n2024,3,28.3,1750\n2024,4,58.6,1880\n2024,5,95.2,2050\n2024,6,125.3,2250\n2024,7,192.5,2480\n2024,8,225.8,2620\n2024,9,168.5,2420\n2024,10,148.2,2180`;
+const zyCSV=`年份,月份,游客接待量_万人,人均消费_元\n2019,1,18.5,980\n2019,2,22.3,1020\n2019,3,38.6,1050\n2019,4,68.5,1180\n2019,5,125.3,1350\n2019,6,168.5,1520\n2019,7,285.6,1780\n2019,8,342.8,1850\n2019,9,248.5,1680\n2019,10,225.6,1520\n2019,11,68.3,1150\n2019,12,28.5,1020\n2020,1,5.2,850\n2020,2,3.8,820\n2020,3,8.5,880\n2020,4,22.3,980\n2020,5,45.6,1080\n2020,6,78.5,1250\n2020,7,125.3,1480\n2020,8,152.6,1580\n2020,9,108.5,1420\n2020,10,95.3,1350\n2020,11,25.6,980\n2020,12,8.3,890\n2021,1,8.5,920\n2021,2,10.2,950\n2021,3,22.3,1020\n2021,4,58.5,1150\n2021,5,108.5,1320\n2021,6,148.5,1480\n2021,7,258.6,1720\n2021,8,312.5,1820\n2021,9,225.6,1650\n2021,10,198.5,1480\n2021,11,55.3,1120\n2021,12,18.5,980\n2022,1,5.8,880\n2022,2,6.5,920\n2022,3,10.2,980\n2022,4,28.5,1050\n2022,5,52.3,1180\n2022,6,128.5,1420\n2022,7,238.5,1680\n2022,8,285.6,1780\n2022,9,205.3,1580\n2022,10,178.5,1420\n2022,11,42.3,1050\n2022,12,12.3,920\n2023,1,12.5,980\n2023,2,18.5,1020\n2023,3,38.5,1120\n2023,4,78.5,1280\n2023,5,138.5,1480\n2023,6,185.6,1620\n2023,7,305.2,1850\n2023,8,368.5,1950\n2023,9,268.5,1750\n2023,10,242.5,1580\n2023,11,78.5,1220\n2023,12,28.6,1050\n2024,1,15.8,1020\n2024,2,22.3,1050\n2024,3,45.6,1180\n2024,4,88.5,1320\n2024,5,152.3,1520\n2024,6,198.5,1680\n2024,7,328.5,1920\n2024,8,395.2,2020\n2024,9,288.5,1820\n2024,10,258.5,1650`;
+const lzCSV=`年份,月份,游客接待量_万人,人均消费_元\n2019,1,125.3,750\n2019,2,158.6,780\n2019,3,185.2,820\n2019,4,258.3,880\n2019,5,385.6,950\n2019,6,425.8,1020\n2019,7,585.2,1180\n2019,8,625.8,1250\n2019,9,485.3,1080\n2019,10,425.6,980\n2019,11,185.3,820\n2019,12,112.5,760\n2020,1,28.5,680\n2020,2,18.6,650\n2020,3,35.8,720\n2020,4,68.5,780\n2020,5,125.3,850\n2020,6,168.5,920\n2020,7,225.3,1020\n2020,8,245.8,1080\n2020,9,185.3,980\n2020,10,158.5,880\n2020,11,58.5,750\n2020,12,28.5,680\n2021,1,42.5,720\n2021,2,45.3,750\n2021,3,78.5,820\n2021,4,185.3,880\n2021,5,325.6,950\n2021,6,385.2,1050\n2021,7,525.8,1180\n2021,8,568.5,1250\n2021,9,425.3,1080\n2021,10,385.6,980\n2021,11,152.3,820\n2021,12,68.5,750\n2022,1,25.3,680\n2022,2,22.5,700\n2022,3,38.5,780\n2022,4,85.3,850\n2022,5,152.3,920\n2022,6,325.8,1020\n2022,7,485.3,1150\n2022,8,525.6,1220\n2022,9,385.2,1050\n2022,10,345.3,950\n2022,11,112.5,800\n2022,12,42.3,720\n2023,1,58.5,780\n2023,2,68.5,820\n2023,3,112.5,880\n2023,4,225.3,950\n2023,5,398.5,1050\n2023,6,458.2,1120\n2023,7,625.3,1280\n2023,8,685.2,1350\n2023,9,528.5,1150\n2023,10,468.5,1050\n2023,11,215.3,880\n2023,12,98.5,820\n2024,1,68.5,820\n2024,2,78.5,850\n2024,3,128.5,920\n2024,4,248.5,980\n2024,5,425.3,1080\n2024,6,485.6,1150\n2024,7,658.5,1320\n2024,8,725.3,1380\n2024,9,558.5,1180\n2024,10,492.5,1080`;
+function parseCSV(c){const l=c.trim().split('\n'),h=l[0].split(',');return l.slice(1).map(r=>{const v=r.split(','),o={};h.forEach((k,i)=>o[k.trim()]=v[i]?v[i].trim():'');return o})}
+const dh=parseCSV(dhCSV),zy=parseCSV(zyCSV),lz=parseCSV(lzCSV);
+const months=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+const years=['2019','2020','2021','2022','2023','2024'];
+// Heatmap
+const ht=echarts.init(document.getElementById('ch-heat'));
+const hd=dh.map(d=>[parseInt(d['月份'])-1,years.indexOf(d['年份']),parseFloat(d['游客接待量_万人'])]);
+ht.setOption({tooltip:{position:'top',formatter:p=>`${p.value[1]}年${months[p.value[0]]}<br/>游客量：<b style="color:#b8860b">${p.value[2]}</b>万人`},grid:{left:70,right:40,top:10,bottom:30},xAxis:{type:'category',data:months,axisLabel:{color:'#8a7a60',fontSize:9},axisLine:{lineStyle:{color:'#ddd'}}},yAxis:{type:'category',data:years,axisLabel:{color:'#8a7a60',fontSize:11},axisLine:{lineStyle:{color:'#ddd'}}},visualMap:{min:0,max:Math.max(...hd.map(d=>d[2])),calculable:true,orient:'horizontal',left:'center',bottom:0,inRange:{color:['#fff8e7','#e8c560','#b8860b','#7b241c']},textStyle:{color:'#8a7a60',fontSize:9}},series:[{type:'heatmap',data:hd,label:{show:false},itemStyle:{borderColor:'#fffdf7',borderWidth:1.2}}]});
+// Line
+const ln=echarts.init(document.getElementById('ch-line'));
+function gy(d,y){return d.filter(r=>r['年份']===String(y)).map(r=>parseFloat(r['游客接待量_万人']))}
+ln.setOption({tooltip:{trigger:'axis'},legend:{data:['敦煌','张掖','兰州'],top:0,textStyle:{color:'#6b5e4a',fontSize:10}},grid:{left:50,right:18,top:32,bottom:25},xAxis:{type:'category',data:months,axisLabel:{color:'#8a7a60',fontSize:9},axisLine:{lineStyle:{color:'#ddd'}}},yAxis:{type:'value',name:'万人',axisLabel:{color:'#8a7a60',fontSize:9},splitLine:{lineStyle:{color:'rgba(0,0,0,0.05)'}}},series:[{name:'敦煌',type:'line',data:gy(dh,2024),smooth:true,symbol:'emptyCircle',symbolSize:6,lineStyle:{width:2.5,color:'#d4a050'},itemStyle:{color:'#d4a050'},areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(212,160,80,0.2)'},{offset:1,color:'rgba(212,160,80,0)'}])}},{name:'张掖',type:'line',data:gy(zy,2024),smooth:true,symbol:'emptyCircle',symbolSize:6,lineStyle:{width:2.5,color:'#5b9bd5'},itemStyle:{color:'#5b9bd5'},areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(91,155,213,0.2)'},{offset:1,color:'rgba(91,155,213,0)'}])}},{name:'兰州',type:'line',data:gy(lz,2024),smooth:true,symbol:'emptyCircle',symbolSize:6,lineStyle:{width:2.5,color:'#7bc47f'},itemStyle:{color:'#7bc47f'},areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(123,196,127,0.2)'},{offset:1,color:'rgba(123,196,127,0)'}])}}]});
+// Bar
+const br=echarts.init(document.getElementById('ch-bar'));
+const byrs=['2019','2020','2021','2022','2023','2024'];
+function as(d,y){const yd=d.filter(r=>r['年份']===y);return yd.length?(yd.reduce((s,r)=>s+parseFloat(r['人均消费_元']),0)/yd.length).toFixed(0):0}
+br.setOption({tooltip:{trigger:'axis'},legend:{data:['敦煌','张掖','兰州'],top:0,textStyle:{color:'#6b5e4a',fontSize:10}},grid:{left:50,right:15,top:32,bottom:25},xAxis:{type:'category',data:byrs,axisLabel:{color:'#8a7a60',fontSize:9},axisLine:{lineStyle:{color:'#ddd'}}},yAxis:{type:'value',name:'元',axisLabel:{color:'#8a7a60',fontSize:9},splitLine:{lineStyle:{color:'rgba(0,0,0,0.05)'}}},series:[{name:'敦煌',type:'bar',data:byrs.map(y=>as(dh,y)),barWidth:'36%',itemStyle:{borderRadius:[4,4,0,0],color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#e8c560'},{offset:1,color:'#b8860b'}])}},{name:'张掖',type:'bar',data:byrs.map(y=>as(zy,y)),barWidth:'36%',itemStyle:{borderRadius:[4,4,0,0],color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#5b9bd5'},{offset:1,color:'#2e75b6'}])}},{name:'兰州',type:'bar',data:byrs.map(y=>as(lz,y)),barWidth:'36%',itemStyle:{borderRadius:[4,4,0,0],color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#7bc47f'},{offset:1,color:'#3d9140'}])}}]});
+// Sankey
+const sk=echarts.init(document.getElementById('ch-sankey'));
+sk.setOption({tooltip:{trigger:'item',triggerOn:'mousemove',formatter:p=>p.dataType==='edge'?`${p.data.source}→${p.data.target}<br/>客流：<b style="color:#b8860b">${p.data.value}</b>万人`:`${p.name}`},series:[{type:'sankey',layout:'none',emphasis:{focus:'adjacency'},nodeAlign:'left',data:[{name:'敦煌',itemStyle:{color:'#d4a050'}},{name:'张掖',itemStyle:{color:'#5b9bd5'}},{name:'兰州',itemStyle:{color:'#7bc47f'}},{name:'甘周边',itemStyle:{color:'#ce93d8'}},{name:'华北',itemStyle:{color:'#ef5350'}},{name:'华东',itemStyle:{color:'#42a5f5'}},{name:'华南',itemStyle:{color:'#26a69a'}},{name:'西南',itemStyle:{color:'#ff7043'}},{name:'华中',itemStyle:{color:'#ab47bc'}}],links:[{source:'敦煌',target:'甘周边',value:32.8},{source:'敦煌',target:'华北',value:72.3},{source:'敦煌',target:'华东',value:148.3},{source:'敦煌',target:'华南',value:85.6},{source:'敦煌',target:'西南',value:38.5},{source:'敦煌',target:'华中',value:43.5},{source:'张掖',target:'甘周边',value:366.8},{source:'张掖',target:'华北',value:28.5},{source:'张掖',target:'华东',value:20.5},{source:'张掖',target:'西南',value:152.3},{source:'张掖',target:'华中',value:72.3},{source:'兰州',target:'甘周边',value:125.8},{source:'兰州',target:'华北',value:201},{source:'兰州',target:'华东',value:247.3},{source:'兰州',target:'华南',value:135.6},{source:'兰州',target:'西南',value:228.5},{source:'兰州',target:'华中',value:158.5}],label:{color:'#6b5e4a',fontSize:9},lineStyle:{color:'gradient',curveness:0.5,opacity:0.35}}]});
+// Recovery
+const rc=echarts.init(document.getElementById('ch-recovery'));
+rc.setOption({tooltip:{trigger:'axis'},legend:{data:['敦煌','张掖','兰州'],top:0,textStyle:{color:'#6b5e4a',fontSize:10}},grid:{left:55,right:20,top:32,bottom:28},xAxis:{type:'category',data:['2019','2020','2021','2022','2023','2024'],axisLabel:{color:'#8a7a60',fontSize:10},axisLine:{lineStyle:{color:'#ddd'}}},yAxis:{type:'value',name:'恢复指数(2019=100)',axisLabel:{color:'#8a7a60',fontSize:9},splitLine:{lineStyle:{color:'rgba(0,0,0,0.05)'}}},series:[{name:'敦煌',type:'line',data:[100,52.9,87.0,72.6,108.4,112.3],smooth:true,symbol:'circle',symbolSize:8,lineStyle:{width:2.5,color:'#d4a050'},itemStyle:{color:'#d4a050'},markLine:{silent:true,symbol:'none',data:[{yAxis:100,label:{formatter:'基准线',color:'#8a7a60',fontSize:10}}],lineStyle:{color:'rgba(0,0,0,0.12)',type:'dotted'}}},{name:'张掖',type:'line',data:[100,40.2,86.5,72.5,106.6,109.6],smooth:true,symbol:'circle',symbolSize:8,lineStyle:{width:2.5,color:'#5b9bd5'},itemStyle:{color:'#5b9bd5'}},{name:'兰州',type:'line',data:[100,30.0,84.8,55.8,116.2,117.9],smooth:true,symbol:'circle',symbolSize:8,lineStyle:{width:2.5,color:'#7bc47f'},itemStyle:{color:'#7bc47f'}}]});
+</script>
+</body>
+</html>

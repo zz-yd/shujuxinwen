@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>丝路热度数据观察 | 近五年甘肃旅游变迁</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:#faf6ee;color:#3a3226;line-height:1.9}
+
+/* ====== COVER ====== */
+.cover{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;overflow:hidden}
+.cover::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,
+  #f5e0b0 0%,#e8c560 8%,#d4a050 16%,#c4943a 24%,
+  #b0802a 32%,#9a6a1a 42%,#8a5a10 55%,
+  #b0802a 68%,#d4a050 82%,#e8c560 92%,#f5e0b0 100%)}
+.cover::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,rgba(255,210,0,0.3) 0%,transparent 50%)}
+.cover-content{position:relative;z-index:2;text-align:center;max-width:860px}
+.cover .badge{display:inline-block;padding:6px 24px;border:2px solid rgba(255,255,255,0.5);border-radius:24px;color:#fff;font-size:12px;letter-spacing:5px;margin-bottom:20px;background:rgba(0,0,0,0.15)}
+.cover h1{font-size:clamp(30px,6vw,60px);font-weight:900;color:#fff;letter-spacing:6px;margin-bottom:10px;text-shadow:0 3px 20px rgba(0,0,0,0.4)}
+.cover h1 em{color:#fff8c0;font-style:normal}
+.cover .csub{font-size:clamp(14px,2vw,18px);color:rgba(255,255,255,0.8);font-weight:300;letter-spacing:3px;margin-bottom:18px}
+.cover .cdesc{font-size:14px;color:rgba(255,255,255,0.65);max-width:600px;margin:0 auto 36px;line-height:2.2}
+.cover .cdesc em{color:#fff8c0;font-style:normal;font-weight:600}
+.cover-stats{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+.cs-card{background:rgba(255,255,255,0.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:18px 28px;min-width:140px;transition:all .3s}
+.cs-card:hover{transform:translateY(-4px);background:rgba(255,255,255,0.2)}
+.cs-card .csn{font-size:36px;font-weight:900;color:#fff8c0}
+.cs-card .csl{font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px}
+.scroll-hint{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:2;color:rgba(255,255,255,0.6);font-size:12px;letter-spacing:3px;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-10px)}}
+
+/* ====== SECTIONS ====== */
+.sec{padding:70px 20px}
+.sec-alt{background:linear-gradient(180deg,#fefcf7 0%,#faf6ee 50%,#f3ede0 100%)}
+.sec-inner{max-width:1100px;margin:0 auto}
+.sec-label{font-size:11px;color:#b8860b;letter-spacing:5px;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.sec-title{font-size:clamp(22px,3.5vw,34px);font-weight:800;color:#2a1f0e;margin-bottom:6px}
+.sec-sub{font-size:14px;color:#8a7a60;margin-bottom:14px;max-width:600px}
+.sec-div{width:60px;height:3px;background:linear-gradient(90deg,#d4a050,transparent);margin-bottom:28px;border-radius:2px}
+
+/* ====== 文字卡片 ====== */
+.card-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:24px 0}
+.crd{background:#fff;border-radius:14px;padding:22px 24px;box-shadow:0 1px 8px rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.04);transition:all .3s}
+.crd:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+.crd::before{content:'';display:block;width:36px;height:3px;border-radius:2px;margin-bottom:10px}
+.crd.gold::before{background:#d4a050}
+.crd.blue::before{background:#5b9bd5}
+.crd.green::before{background:#7bc47f}
+.crd.teal::before{background:#5da9a9}
+.crd h4{font-size:15px;font-weight:700;margin-bottom:6px;color:#2a1f0e}
+.crd p{font-size:13px;color:#6b5e4a;line-height:1.85}
+.crd .hi{color:#b8860b;font-weight:700}
+
+/* ====== 图表 ====== */
+.chart-wrap{background:#fff;border-radius:16px;padding:20px;margin:20px 0;box-shadow:0 1px 8px rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.04)}
+.chart-wrap .ct{font-size:16px;font-weight:700;color:#2a1f0e;margin-bottom:2px}
+.chart-wrap .cn{font-size:11px;color:#9a8a6a;margin-bottom:12px}
+.ch-inner{width:100%;height:440px}
+.ch-inner.tall{height:520px}
+.ch-inner.short{height:360px}
+
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+@media(max-width:800px){.row2,.row3{grid-template-columns:1fr}.ch-inner,.ch-inner.tall,.ch-inner.short{height:320px}}
+
+/* ====== TABS ====== */
+.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tab{padding:8px 22px;border-radius:22px;cursor:pointer;font-size:13px;font-weight:600;border:2px solid #e0d5c0;color:#8a7a60;background:#fff;transition:all .3s}
+.tab.on,.tab:hover{background:linear-gradient(135deg,#d4a050,#b8860b);border-color:transparent;color:#fff}
+
+/* ====== 标签 ====== */
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.tag{padding:6px 16px;border-radius:18px;font-size:13px;border:1px solid #e0d5c0;color:#6b5e4a;background:#fff;transition:all .2s}
+.tag:hover{background:#b8860b;color:#fff;border-color:#b8860b}
+.tag.big{font-size:16px;padding:8px 18px}
+.tag.sml{font-size:11px;padding:5px 12px}
+
+/* ====== 文字 ====== */
+.txt{max-width:800px;margin:28px auto}
+.txt p{font-size:14.5px;color:#5a4d38;line-height:2.2;margin-bottom:14px;text-indent:2em}
+.txt p:first-of-type{text-indent:0}
+.pull{font-size:20px;color:#b8860b;font-weight:600;text-align:center;margin:30px 0;padding:24px 30px;border-top:2px solid #e8d5a0;border-bottom:2px solid #e8d5a0;background:linear-gradient(90deg,transparent,rgba(212,160,80,0.05),transparent);font-style:italic;text-indent:0}
+
+/* ====== FOOTER ====== */
+.foot{background:linear-gradient(180deg,#2a1f0e,#1a1408);color:#a89878;padding:56px 20px;text-align:center}
+.foot h3{color:#e8c560;font-size:22px;margin-bottom:20px}
+.foot p{font-size:12px;line-height:2.1;color:#8a7a60}
+.foot .ftags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:20px 0}
+.foot .ftag{padding:5px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:16px;font-size:11px;color:#a89878}
+
+/* ====== ANIM ====== */
+.reveal{opacity:0;transform:translateY(30px);transition:all 0.7s ease}
+.reveal.on{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- ================================================================ -->
+<!-- COVER -->
+<!-- ================================================================ -->
+<section class="cover">
+  <div class="cover-content">
+    <div class="badge">数 据 新 闻 · 深 度 报 道</div>
+    <h1><em>丝路热度</em>数据观察</h1>
+    <p class="csub">—— 近五年甘肃各地旅游客流、消费与客源地变迁 ——</p>
+    <p class="cdesc">驼铃古道，大漠孤烟。<em>敦煌莫高窟</em>、<em>张掖丹霞</em>、<em>兰州黄河</em>——<br>丝绸之路甘肃段是中国最具世界影响力的文化旅游廊道。<br>2019至2024，这条千年古道经历了<em>疫情凛冬、强势反弹与全面新生</em>。</p>
+    <div class="cover-stats">
+      <div class="cs-card"><span class="csn" id="s1">--</span><span class="csl">三城五年游客总量(万人次)</span></div>
+      <div class="cs-card"><span class="csn" id="s2">--</span><span class="csl">旅游综合收入(亿元)</span></div>
+      <div class="cs-card"><span class="csn" id="s3">--</span><span class="csl">2024较2019客流增幅</span></div>
+      <div class="cs-card"><span class="csn" id="s4">--</span><span class="csl">线上口碑点评总量(万条)</span></div>
+    </div>
+  </div>
+  <div class="scroll-hint">▼ 向下滚动 探索数据</div>
+</section>
+
+<!-- ================================================================ -->
+<!-- CH1 -->
+<!-- ================================================================ -->
+<section class="sec">
+  <div class="sec-inner reveal">
+    <div class="sec-label">· 第一章 ·</div>
+    <h2 class="sec-title">🏜️ 月度旅游热度：冷暖之间的五年</h2>
+    <p class="sec-sub">敦煌、张掖、兰州 —— 三座丝路重镇，六年七十二个月，用颜色讲述时间的故事。</p>
+    <div class="sec-div"></div>
+
+    <div class="card-row">
+      <div class="crd gold"><h4>🏯 敦煌 · 莫高窟</h4><p>世界文化遗产 · 丝路明珠<br>年接待游客突破<span class="hi">1000万人次</span><br>2024年8月峰值：<span class="hi">225.8万人</span></p></div>
+      <div class="crd blue"><h4>🏔️ 张掖 · 七彩丹霞</h4><p>世界地质公园 · 中国最美七大丹霞<br>2024年8月峰值：<span class="hi">395.2万人</span><br>自驾游客占比<span class="hi">62%</span></p></div>
+      <div class="crd green"><h4>🌉 兰州 · 黄河之滨</h4><p>黄河唯一穿城而过的省会城市<br>2024年8月峰值：<span class="hi">725.3万人</span><br>高铁出行占比<span class="hi">55%</span></p></div>
+    </div>
+
+    <div class="txt">
+      <p>热力图清晰揭示了丝路旅游的<strong>季节性铁律</strong>。7至8月是无可撼动的黄金窗口，敦煌暑期月均客流占全年36%以上。每年10月国庆黄金周后迅速转入长达半年的淡季——<strong>敦煌淡旺季客流比高达8.5:1</strong>。</p>
+      <p>2020年的"寒冬"触目惊心：敦煌2月仅1.5万游客，不足2019年同期的七分之一。但<strong>2023年的回暖同样热烈</strong>：敦煌8月208.6万人次不仅恢复至疫情前，更较2019年同期增长6.6%。</p>
+    </div>
+    <div class="pull">"每年七月到十月，鸣沙山下的驼队要从沙丘这头排到那头去。" —— 敦煌导游 马师傅</div>
+
+    <div class="tabs">
+      <div class="tab on" data-city="敦煌">🏯 敦煌</div>
+      <div class="tab" data-city="张掖">🏔️ 张掖</div>
+      <div class="tab" data-city="兰州">🌉 兰州</div>
+    </div>
+    <div class="chart-wrap"><div class="ct" id="htitle">敦煌 · 月度游客接待量热力图（2019-2024）</div><div class="cn">颜色越暖 = 游客越多 | 点击上方城市标签切换</div><div class="ch-inner" id="ch-heat"></div></div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- CH2 -->
+<!-- ================================================================ -->
+<section class="sec sec-alt">
+  <div class="sec-inner reveal">
+    <div class="sec-label">· 第二章 ·</div>
+    <h2 class="sec-title">📈 客流回升与消费升级的"双重奏"</h2>
+    <p class="sec-sub">后疫情时代，丝路旅游不仅"人回来了"，而且"花得更多了"，深度体验正在取代走马观花。</p>
+    <div class="sec-div"></div>
+
+    <div class="card-row">
+      <div class="crd gold"><h4>🏯 敦煌：高端文化体验领跑</h4><p>人均消费从1520元跃升至<span class="hi">2620元（+72%）</span>。《又见敦煌》沉浸式演出、莫高窟特窟、沙漠野奢营地推动客单价提升。游客平均停留时间从1.8天延长至2.6天。</p></div>
+      <div class="crd blue"><h4>🚗 张掖：自驾游经济崛起</h4><p>陕川宁自驾游客占56%，人均消费从980元升至<span class="hi">2020元（+106%）</span>。丹霞周边民宿从不足百家增长至超500家，成为消费翻倍的核心引擎。</p></div>
+      <div class="crd green"><h4>🌉 兰州：枢纽城市的"逆袭"</h4><p>人均消费从750元升至<span class="hi">1380元（+84%）</span>，增速三城最快。黄河楼灯光秀、正宁路夜市、水墨丹霞等新IP崛起，夜经济消费占比跃升至18%。</p></div>
+    </div>
+
+    <div class="row2">
+      <div class="chart-wrap"><div class="ct">2024年三城月度客流走势</div><div class="cn">单位：万人次 | 平滑曲线</div><div class="ch-inner short" id="ch-line"></div></div>
+      <div class="chart-wrap"><div class="ct">人均文旅消费年度变化</div><div class="cn">单位：元/人 | 六年数据</div><div class="ch-inner short" id="ch-bar"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- CH3 -->
+<!-- ================================================================ -->
+<section class="sec">
+  <div class="sec-inner reveal">
+    <div class="sec-label">· 第三章 ·</div>
+    <h2 class="sec-title">🎯 黄金周的"心跳曲线"</h2>
+    <p class="sec-sub">春节、五一、端午、暑期、国庆 —— 五年六度轮回，每一个节假日都是丝路旅游的压力测试。</p>
+    <div class="sec-div"></div>
+
+    <div class="card-row">
+      <div class="crd gold"><h4>🌉 兰州 · 黄河之滨</h4><p>黄河穿城而过，中山桥百年守望<br>兰州从"过路站"变身"目的地"<br>夜经济消费占比跃升至<span class="hi">18%</span><br>好评率从93.8%升至<span class="hi">97.2%</span></p></div>
+      <div class="crd blue"><h4>🔥 2024暑期数据亮点</h4><p>全省暑期日均客流<span class="hi">1385.6万人次</span><br>敦煌暑期占全年客流<span class="hi">36%</span><br>张掖暑期占全年客流<span class="hi">41%</span><br>2024年暑期较2019年增长<span class="hi">23%</span></p></div>
+    </div>
+
+    <div class="chart-wrap"><div class="ct">五大节假日 · 全省客流峰值对比（2019-2024）</div><div class="cn">暑期（7-8月日均）为绝对王者，贡献全年约38%游客量</div><div class="ch-inner short" id="ch-holiday"></div></div>
+
+    <div class="card-row">
+      <div class="crd gold"><h4>🔥 暑期：绝对王者</h4><p>2024年暑期全省日均<span class="hi">1385.6万人次</span>，是春节的3.4倍。暑期贡献全年约38%的游客量和45%的旅游收入。</p></div>
+      <div class="crd teal"><h4>❄️ 春节：恢复最慢</h4><p>2020年春节客流暴跌68%，但<span class="hi">2023年春节报复性增长235%</span>——"回家过年+出门旅行"需求集中释放。</p></div>
+      <div class="crd blue"><h4>📉 2022：W型震荡之年</h4><p>全年所有假期客流均低于2021年，疫情反复使恢复曲线呈<span class="hi">W型震荡</span>，直到2022年底才彻底终结。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- CH4 -->
+<!-- ================================================================ -->
+<section class="sec sec-alt">
+  <div class="sec-inner reveal">
+    <div class="sec-label">· 第四章 ·</div>
+    <h2 class="sec-title">🌏 客从何处来：丝路旅游的"引力半径"</h2>
+    <p class="sec-sub">手机信令与交通票务数据揭示：谁在千里奔赴丝路？从多远的地方来？用什么方式抵达？</p>
+    <div class="sec-div"></div>
+
+    <div class="txt">
+      <p><strong>华东地区（江浙沪）是丝路旅游第一大省外客源</strong>，贡献全省23.8%的省外游客。西南（川渝）紧随其后，华北（京津冀）第三。<strong>华南（粤闽）客源增长最猛</strong>，2024年同比上升18.5%。</p>
+      <div class="pull">"以前来敦煌的都是历史文化爱好者，现在穿汉服拍照的年轻人占了半边天。" —— 敦煌文旅局工作人员</div>
+    </div>
+
+    <div class="row2">
+      <div class="chart-wrap"><div class="ct">客源迁徙桑基图 · 目的地←客源流量</div><div class="cn">线条粗细=客流量（万人/年）</div><div class="ch-inner" id="ch-sankey"></div></div>
+      <div class="chart-wrap"><div class="ct">省外客源区域占比 · 环形分布</div><div class="cn">六大区域份额 | 华东居首</div><div class="ch-inner" id="ch-pie"></div></div>
+    </div>
+
+    <div class="card-row">
+      <div class="crd gold"><h4>🏯 敦煌：全国性文化IP</h4><p>华东28%、华南18%、华北15%。<span class="hi">远距离客源三城最高</span>，飞机出行68%。"一生必去一次莫高窟"的号召力无出其右。</p></div>
+      <div class="crd blue"><h4>🏔️ 张掖：区域自驾天堂</h4><p>陕+川+宁占56%客源，<span class="hi">自驾比例高达62%</span>。500公里半径周末自驾圈为核心，复游率三城最高。</p></div>
+      <div class="crd green"><h4>🌉 兰州：西北"会客厅"</h4><p>客源最均衡（华东26%、西南20%、华北17%）。<span class="hi">70%敦煌游客经兰州中转</span>，兰州自身也从"中转站"升级为"目的地"。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- CH5 -->
+<!-- ================================================================ -->
+<section class="sec">
+  <div class="sec-inner reveal">
+    <div class="sec-label">· 第五章 ·</div>
+    <h2 class="sec-title">💬 数字化口碑：百万条点评里的丝路画像</h2>
+    <p class="sec-sub">携程、美团、马蜂窝、小红书——数以百万计的线上点评，拼出丝路旅游的"数字口碑地图"。</p>
+    <div class="sec-div"></div>
+
+    <div class="chart-wrap"><div class="ct">年度线上点评总数 & 好评率双轴趋势图</div><div class="cn">柱状图=点评总数(条) | 折线=好评率(%) | 六年三城对比</div><div class="ch-inner" id="ch-reviews"></div></div>
+
+    <div class="txt"><p>兰州好评率增速三城最快，游客对兰州"从过路站到目的地"的认知转变加速。敦煌好评率始终维持在97.5%-98.8%，"一生必去一次"口碑效应持续放大。</p></div>
+
+    <div class="card-row">
+      <div class="crd gold"><h4>🏯 敦煌 · 情感关键词</h4><div class="tags"><span class="tag big" style="color:#b8860b;border-color:#d4a050">震撼</span><span class="tag">感动</span><span class="tag big" style="color:#b8860b;border-color:#d4a050">值得</span><span class="tag">沙漠</span><span class="tag">莫高窟</span><span class="tag sml">鸣沙山</span><span class="tag sml">月牙泉</span></div></div>
+      <div class="crd blue"><h4>🏔️ 张掖 · 情感关键词</h4><div class="tags"><span class="tag big" style="color:#2e75b6;border-color:#5b9bd5">丹霞</span><span class="tag">壮观</span><span class="tag">七彩</span><span class="tag big" style="color:#2e75b6;border-color:#5b9bd5">摄影</span><span class="tag">自驾</span><span class="tag sml">热气球</span><span class="tag sml">彩虹山</span></div></div>
+      <div class="crd green"><h4>🌉 兰州 · 情感关键词</h4><div class="tags"><span class="tag big" style="color:#3d9140;border-color:#7bc47f">牛肉面</span><span class="tag">黄河</span><span class="tag big" style="color:#3d9140;border-color:#7bc47f">好吃</span><span class="tag">夜市</span><span class="tag">中山桥</span><span class="tag sml">正宁路</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- CH6 -->
+<!-- ================================================================ -->
+<section class="sec sec-alt">
+  <div class="sec-inner reveal">
+    <div class="sec-label">· 第六章 ·</div>
+    <h2 class="sec-title">✈️ 交通网络与恢复韧性</h2>
+    <p class="sec-sub">高铁网加密、支线机场扩容、自驾公路升级——交通基础设施正在重塑丝路旅游空间格局。</p>
+    <div class="sec-div"></div>
+
+    <div class="card-row">
+      <div class="crd gold"><h4>🛣️ 连霍高速 · 河西走廊段</h4><p>中国最长高速公路<br>自驾游丝路的"大动脉"<br>连霍高速张掖段节假日流量<br>常年位居<span class="hi">甘肃段前三</span></p></div>
+      <div class="crd blue"><h4>✈️ 敦煌莫高国际机场</h4><p>年吞吐量突破<span class="hi">200万人次</span><br>已开通全国<span class="hi">38个城市</span>直飞航线<br>敦煌游客飞机出行占比<span class="hi">68%</span></p></div>
+      <div class="crd green"><h4>🚄 兰州西站 · 高铁枢纽</h4><p>西北最大高铁枢纽<br>日均发送旅客超<span class="hi">8万人次</span><br>兰新、宝兰、兰渝铁路交汇<br>兰州游客高铁出行占比<span class="hi">55%</span></p></div>
+    </div>
+
+    <div class="row2">
+      <div class="chart-wrap"><div class="ct">2024年三城交通方式构成 · 雷达图</div><div class="cn">敦煌航空68% | 张掖自驾62% | 兰州高铁55%</div><div class="ch-inner short" id="ch-radar"></div></div>
+      <div class="chart-wrap"><div class="ct">三城旅游恢复指数（2019=100）</div><div class="cn">兰州受创最深反弹最猛 | 敦煌最稳健</div><div class="ch-inner short" id="ch-recovery"></div></div>
+    </div>
+
+    <div class="card-row">
+      <div class="crd gold"><h4>🛫 敦煌：航空依赖型</h4><p>飞机68%，高铁22%，自驾仅8%。已开通全国38个城市直飞航线。<span class="hi">远距离客源主导</span>决定航空是敦煌生命线。</p></div>
+      <div class="crd blue"><h4>🚙 张掖：自驾驱动型</h4><p>自驾62%，高铁18%，飞机15%。<span class="hi">500公里半径</span>内陕川宁青蒙是核心市场，连霍高速是旅游"血管"。</p></div>
+      <div class="crd green"><h4>🚄 兰州：高铁枢纽型</h4><p>高铁55%，飞机32%，自驾25%。作为<span class="hi">西北最大高铁枢纽</span>，兰州西站日均发送旅客超8万人次。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- OUTRO -->
+<!-- ================================================================ -->
+<section class="sec">
+  <div class="sec-inner reveal" style="text-align:center">
+    <div class="sec-label">· 结 语 ·</div>
+    <h2 class="sec-title">千年丝路，热度不减</h2>
+    <div class="sec-div" style="margin:20px auto"></div>
+    <div class="txt" style="text-align:left">
+      <p>五年数据勾勒出清晰的<strong>V型复苏曲线</strong>：2019巅峰→2020谷底→2021-2022震荡→2023全面超越→2024稳步增长。敦煌2024年8月225.8万人次、张掖395.2万人次、兰州725.3万人次——<strong>丝路热度，从未消退</strong>。</p>
+      <p>挑战同样存在：淡旺季悬殊（冬季敦煌酒店入住率不足30%）、莫高窟承载力逼近极限（日限流6000人）、张掖远距离客源占比仅23%。如何用数字化手段淡季引流？如何让丝路从三城延伸到武威、嘉峪关、酒泉？这是下一个五年的课题。</p>
+    </div>
+    <div class="card-row" style="max-width:900px;margin:0 auto">
+      <div class="crd gold"><h4>🔮 高铁经济圈</h4><p>兰张高铁、敦格铁路贯通后，<span class="hi">"兰州-张掖-嘉峪关-敦煌"3小时旅游圈</span>将成为现实。</p></div>
+      <div class="crd blue"><h4>📱 数字化淡季引流</h4><p>借鉴敦煌"数字藏经洞"（线上访问超1.2亿次），用<span class="hi">元宇宙+VR+直播</span>转化淡季客源。</p></div>
+      <div class="crd green"><h4>🌱 可持续旅游</h4><p><span class="hi">"限量+预约+错峰"</span>将推广至丝路全线核心景区，实现保护与发展平衡。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- FOOTER -->
+<!-- ================================================================ -->
+<section class="foot">
+  <h3>关于本作品</h3>
+  <p>数据新闻课程期末作品 · 聚焦2019-2024年甘肃丝路旅游核心数据</p>
+  <p>通过七类交互式可视化图表，多维呈现丝路文旅经济的冷暖变迁与消费升级</p>
+  <div class="ftags"><span class="ftag">📊 ECharts 5.5</span><span class="ftag">🏜️ 暖色沙漠主题</span><span class="ftag">📱 移动端适配</span><span class="ftag">🖱️ 交互式探索</span></div>
+  <p style="margin-top:20px;font-size:11px;color:#6b5e4a">数据新闻课程作品 © 2025 · 数据为模拟推算</p>
+</section>
+
+<!-- ================================================================ -->
+<!-- SCRIPTS (inline ECharts, no CDN dependency -- use backup)         -->
+<!-- ================================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script>
+// Fallback: if ECharts fails to load from CDN, try other mirrors
+if(typeof echarts==='undefined'){
+  var s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js';
+  document.head.appendChild(s);
+}
+</script>
+<script>
+// ===== DATA =====
+var dhCSV='年份,???,?????_??,????_%,????_?,??????_?,???_%\n2019,1,8.2,-,1520,3240,94.5\n2019,2,10.5,-,1580,3890,95.1\n2019,3,18.7,-,1620,5210,95.8\n2019,4,45.3,-,1780,8920,96.2\n2019,5,82.6,-,1950,15600,96.5\n2019,6,105.4,-,2100,18900,97.1\n2019,7,168.3,-,2350,25600,97.8\n2019,8,195.7,-,2480,31200,98.0\n2019,9,142.5,-,2280,23400,97.5\n2019,10,128.9,-,2050,19800,97.2\n2019,11,32.4,-,1680,6780,95.8\n2019,12,12.8,-,1550,4120,94.8\n2020,1,2.1,-74.4,1320,890,92.1\n2020,2,1.5,-85.7,1280,560,91.2\n2020,3,3.8,-79.7,1350,1230,92.5\n2020,4,15.2,-66.5,1520,3450,93.8\n2020,5,38.5,-53.4,1680,6780,94.5\n2020,6,62.3,-40.9,1820,10500,95.1\n2020,7,98.6,-41.4,2050,15200,95.8\n2020,8,112.3,-42.6,2150,17800,96.2\n2020,9,78.9,-44.6,1980,13200,95.5\n2020,10,68.4,-46.9,1780,11200,94.8\n2020,11,15.6,-51.9,1480,3450,93.5\n2020,12,5.2,-59.4,1380,1560,92.8\n2021,1,4.8,128.6,1420,1890,93.2\n2021,2,6.2,313.3,1480,2340,93.8\n2021,3,12.5,228.9,1560,4560,94.5\n2021,4,38.6,153.9,1720,7890,95.2\n2021,5,72.3,87.8,1880,13400,95.8\n2021,6,95.8,53.8,2050,16500,96.5\n2021,7,148.6,50.7,2250,22400,97.2\n2021,8,178.2,58.7,2380,27800,97.5\n2021,9,125.3,58.8,2180,20500,97.0\n2021,10,108.7,58.9,1980,17500,96.8\n2021,11,28.5,82.7,1620,5670,95.2\n2021,12,9.8,88.5,1480,2670,94.3\n2022,1,3.2,-33.3,1380,1450,92.8\n2022,2,3.8,-38.7,1420,1780,93.1\n2022,3,6.5,-48.0,1480,2890,93.8\n2022,4,18.2,-52.8,1580,4560,94.2\n2022,5,35.6,-50.8,1720,6780,94.8\n2022,6,78.5,-18.1,1950,12300,95.5\n2022,7,138.2,-7.0,2180,19800,96.8\n2022,8,165.3,-7.2,2320,24500,97.2\n2022,9,115.8,-7.6,2100,18200,96.8\n2022,10,98.2,-9.7,1920,15200,96.2\n2022,11,22.3,-21.8,1550,4230,94.8\n2022,12,6.5,-33.7,1420,1980,93.5\n2023,1,9.5,196.9,1520,3450,94.2\n2023,2,12.8,236.8,1580,4560,94.8\n2023,3,25.6,293.8,1680,7890,95.5\n2023,4,52.3,187.4,1820,12500,96.2\n2023,5,88.6,148.9,1980,17800,96.8\n2023,6,112.5,43.3,2180,21500,97.5\n2023,7,178.5,29.2,2420,29800,98.2\n2023,8,208.6,26.2,2580,35600,98.5\n2023,9,152.3,31.5,2350,26800,98.0\n2023,10,135.8,38.3,2120,22500,97.5\n2023,11,38.5,72.6,1750,7890,96.2\n2023,12,15.2,133.8,1580,4560,95.2\n2024,1,11.2,17.9,1580,4120,94.8\n2024,2,14.5,13.3,1620,5230,95.2\n2024,3,28.3,10.5,1750,8560,95.8\n2024,4,58.6,12.0,1880,14500,96.5\n2024,5,95.2,7.4,2050,19800,97.2\n2024,6,125.3,11.4,2250,23800,97.8\n2024,7,192.5,7.8,2480,32500,98.5\n2024,8,225.8,8.2,2620,38500,98.8\n2024,9,168.5,10.6,2420,29500,98.2\n2024,10,148.2,9.1,2180,24800,97.8';
+
+// Fix: remove Chinese headers, use simple parsing
+function pCSV(txt){
+  var lines=txt.trim().split('\n');
+  var result=[];
+  for(var i=1;i<lines.length;i++){
+    var v=lines[i].split(',');
+    if(v.length<6)continue;
+    result.push({y:v[0],m:v[1],vis:parseFloat(v[2])||0,spend:parseFloat(v[4])||0,reviews:parseFloat(v[5])||0,rate:parseFloat(v[6])||0});
+  }
+  return result;
+}
+
+// Hard-code data to avoid CSV encoding issues
+var dh=[],zy=[],lz=[];
+var months=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+var years=['2019','2020','2021','2022','2023','2024'];
+
+// Dunhuang
+(function(){
+var d=[[8.2,1520,3240,94.5],[10.5,1580,3890,95.1],[18.7,1620,5210,95.8],[45.3,1780,8920,96.2],[82.6,1950,15600,96.5],[105.4,2100,18900,97.1],[168.3,2350,25600,97.8],[195.7,2480,31200,98.0],[142.5,2280,23400,97.5],[128.9,2050,19800,97.2],[32.4,1680,6780,95.8],[12.8,1550,4120,94.8],
+[2.1,1320,890,92.1],[1.5,1280,560,91.2],[3.8,1350,1230,92.5],[15.2,1520,3450,93.8],[38.5,1680,6780,94.5],[62.3,1820,10500,95.1],[98.6,2050,15200,95.8],[112.3,2150,17800,96.2],[78.9,1980,13200,95.5],[68.4,1780,11200,94.8],[15.6,1480,3450,93.5],[5.2,1380,1560,92.8],
+[4.8,1420,1890,93.2],[6.2,1480,2340,93.8],[12.5,1560,4560,94.5],[38.6,1720,7890,95.2],[72.3,1880,13400,95.8],[95.8,2050,16500,96.5],[148.6,2250,22400,97.2],[178.2,2380,27800,97.5],[125.3,2180,20500,97.0],[108.7,1980,17500,96.8],[28.5,1620,5670,95.2],[9.8,1480,2670,94.3],
+[3.2,1380,1450,92.8],[3.8,1420,1780,93.1],[6.5,1480,2890,93.8],[18.2,1580,4560,94.2],[35.6,1720,6780,94.8],[78.5,1950,12300,95.5],[138.2,2180,19800,96.8],[165.3,2320,24500,97.2],[115.8,2100,18200,96.8],[98.2,1920,15200,96.2],[22.3,1550,4230,94.8],[6.5,1420,1980,93.5],
+[9.5,1520,3450,94.2],[12.8,1580,4560,94.8],[25.6,1680,7890,95.5],[52.3,1820,12500,96.2],[88.6,1980,17800,96.8],[112.5,2180,21500,97.5],[178.5,2420,29800,98.2],[208.6,2580,35600,98.5],[152.3,2350,26800,98.0],[135.8,2120,22500,97.5],[38.5,1750,7890,96.2],[15.2,1580,4560,95.2],
+[11.2,1580,4120,94.8],[14.5,1620,5230,95.2],[28.3,1750,8560,95.8],[58.6,1880,14500,96.5],[95.2,2050,19800,97.2],[125.3,2250,23800,97.8],[192.5,2480,32500,98.5],[225.8,2620,38500,98.8],[168.5,2420,29500,98.2],[148.2,2180,24800,97.8]];
+for(var yi=0;yi<6;yi++)for(var mi=0;mi<12;mi++){var idx=yi*12+mi;if(idx<d.length)dh.push({y:years[yi],m:months[mi],vis:d[idx][0],spend:d[idx][1],reviews:d[idx][2],rate:d[idx][3]});}
+})();
+// Zhangye
+(function(){
+var d=[[18.5,980,5230,93.2],[22.3,1020,6120,93.8],[38.6,1050,8560,94.2],[68.5,1180,13400,94.8],[125.3,1350,21200,95.5],[168.5,1520,26800,96.2],[285.6,1780,38900,97.2],[342.8,1850,45600,97.5],[248.5,1680,35200,96.8],[225.6,1520,29800,96.5],[68.3,1150,12300,94.5],[28.5,1020,6780,93.5],
+[5.2,850,1560,91.8],[3.8,820,1120,90.5],[8.5,880,2340,92.1],[22.3,980,4560,93.2],[45.6,1080,7890,94.1],[78.5,1250,12300,94.8],[125.3,1480,17800,95.5],[152.6,1580,21500,95.8],[108.5,1420,16800,95.2],[95.3,1350,14500,94.8],[25.6,980,4560,93.1],[8.3,890,2340,92.5],
+[8.5,920,2670,92.8],[10.2,950,3450,93.2],[22.3,1020,5670,93.8],[58.5,1150,11200,94.8],[108.5,1320,18500,95.5],[148.5,1480,23500,96.2],[258.6,1720,34500,97.2],[312.5,1820,41200,97.5],[225.6,1650,32500,97.0],[198.5,1480,27800,96.5],[55.3,1120,10500,95.2],[18.5,980,4560,94.2],
+[5.8,880,1980,92.2],[6.5,920,2560,92.5],[10.2,980,3890,93.1],[28.5,1050,5670,93.8],[52.3,1180,8900,94.5],[128.5,1420,19800,95.8],[238.5,1680,31200,96.8],[285.6,1780,37800,97.2],[205.3,1580,29800,96.5],[178.5,1420,24500,96.0],[42.3,1050,7890,94.5],[12.3,920,3450,93.2],
+[12.5,980,4560,93.5],[18.5,1020,5670,94.2],[38.5,1120,10500,94.8],[78.5,1280,17800,95.5],[138.5,1480,25600,96.5],[185.6,1620,31200,97.2],[305.2,1850,42500,97.8],[368.5,1950,49800,98.2],[268.5,1750,38500,97.5],[242.5,1580,34500,97.0],[78.5,1220,14500,95.5],[28.6,1050,6780,94.5],
+[15.8,1020,5230,93.8],[22.3,1050,6780,94.5],[45.6,1180,12300,95.2],[88.5,1320,19800,95.8],[152.3,1520,28500,96.8],[198.5,1680,34500,97.5],[328.5,1920,46800,98.2],[395.2,2020,53500,98.5],[288.5,1820,42500,97.8],[258.5,1650,37800,97.2]];
+for(var yi=0;yi<6;yi++)for(var mi=0;mi<12;mi++){var idx=yi*12+mi;if(idx<d.length)zy.push({y:years[yi],m:months[mi],vis:d[idx][0],spend:d[idx][1],reviews:d[idx][2],rate:d[idx][3]});}
+})();
+// Lanzhou
+(function(){
+var d=[[125.3,750,12300,92.5],[158.6,780,15600,92.8],[185.2,820,18500,93.2],[258.3,880,23500,93.8],[385.6,950,32500,94.5],[425.8,1020,38500,95.1],[585.2,1180,48500,95.8],[625.8,1250,53500,96.2],[485.3,1080,42500,95.5],[425.6,980,38500,95.0],[185.3,820,19800,93.8],[112.5,760,14500,93.0],
+[28.5,680,3450,91.2],[18.6,650,2560,90.5],[35.8,720,5230,91.8],[68.5,780,8900,92.5],[125.3,850,14500,93.2],[168.5,920,17800,93.8],[225.3,1020,21500,94.5],[245.8,1080,23500,94.8],[185.3,980,18500,94.2],[158.5,880,16500,93.8],[58.5,750,6780,92.5],[28.5,680,3890,91.8],
+[42.5,720,5230,92.2],[45.3,750,6780,92.8],[78.5,820,10500,93.5],[185.3,880,21500,94.2],[325.6,950,34500,95.0],[385.2,1050,38500,95.5],[525.8,1180,48500,96.2],[568.5,1250,52500,96.5],[425.3,1080,39800,96.0],[385.6,980,35600,95.5],[152.3,820,17800,94.2],[68.5,750,8900,93.2],
+[25.3,680,3450,91.8],[22.5,700,3890,92.2],[38.5,780,5670,92.8],[85.3,850,10500,93.5],[152.3,920,17800,94.2],[325.8,1020,32500,95.2],[485.3,1150,42500,96.0],[525.6,1220,48500,96.2],[385.2,1050,36500,95.5],[345.3,950,32500,95.0],[112.5,800,13500,93.8],[42.3,720,5670,92.5],
+[58.5,780,7890,93.2],[68.5,820,8900,93.8],[112.5,880,15200,94.5],[225.3,950,26800,95.2],[398.5,1050,42500,95.8],[458.2,1120,46800,96.5],[625.3,1280,56800,97.2],[685.2,1350,62500,97.5],[528.5,1150,49800,97.0],[468.5,1050,43500,96.5],[215.3,880,23500,95.0],[98.5,820,12500,94.2],
+[68.5,820,8900,93.5],[78.5,850,10500,94.2],[128.5,920,17500,94.8],[248.5,980,29800,95.5],[425.3,1080,46500,96.2],[485.6,1150,51200,96.8],[658.5,1320,62500,97.5],[725.3,1380,68500,97.8],[558.5,1180,53500,97.2],[492.5,1080,47800,96.8]];
+for(var yi=0;yi<6;yi++)for(var mi=0;mi<12;mi++){var idx=yi*12+mi;if(idx<d.length)lz.push({y:years[yi],m:months[mi],vis:d[idx][0],spend:d[idx][1],reviews:d[idx][2],rate:d[idx][3]});}
+})();
+
+var allData=dh.concat(zy).concat(lz);
+var cityMap={'敦煌':dh,'张掖':zy,'兰州':lz};
+
+// Cover
+var tV=0,tR=0,v19=0,v24=0,tRev=0;
+allData.forEach(function(d){tV+=d.vis;tR+=d.vis*d.spend;tRev+=d.reviews;if(d.y==='2019')v19+=d.vis;if(d.y==='2024')v24+=d.vis;});
+document.getElementById('s1').textContent=(tV/10000).toFixed(1)+'万';
+document.getElementById('s2').textContent=Math.round(tR/10000);
+document.getElementById('s3').textContent=((v24/v19-1)*100).toFixed(1)+'%';
+document.getElementById('s4').textContent=Math.round(tRev/10000)+'万';
+
+function initCharts(){
+if(typeof echarts==='undefined'){setTimeout(initCharts,200);return;}
+
+// Heatmap
+var ht=echarts.init(document.getElementById('ch-heat'));
+function renderHeat(city){
+  var data=cityMap[city];
+  var hd=[],mx=0;
+  data.forEach(function(d){
+    var v=d.vis;
+    if(v>mx)mx=v;
+    hd.push([months.indexOf(d.m),years.indexOf(d.y),v]);
+  });
+  ht.setOption({
+    tooltip:{position:'top',formatter:function(p){return '<b>'+city+'</b> '+p.value[1]+'年'+months[p.value[0]]+'<br/>游客量：<b style="color:#b8860b">'+p.value[2]+'</b> 万人'}},
+    grid:{left:65,right:40,top:15,bottom:35},
+    xAxis:{type:'category',data:months,axisLabel:{color:'#8a7a60',fontSize:10},axisLine:{lineStyle:{color:'#ddd'}}},
+    yAxis:{type:'category',data:years,axisLabel:{color:'#8a7a60',fontSize:11},axisLine:{lineStyle:{color:'#ddd'}}},
+    visualMap:{min:0,max:mx,calculable:true,orient:'horizontal',left:'center',bottom:0,inRange:{color:['#fff8e7','#f5e0b0','#e8c560','#d4a050','#c0392b','#7b241c']},textStyle:{color:'#8a7a60',fontSize:9}},
+    series:[{type:'heatmap',data:hd,label:{show:false},itemStyle:{borderColor:'#faf6ee',borderWidth:1.5}}]
+  });
+}
+renderHeat('敦煌');
+document.querySelectorAll('.tab').forEach(function(t){
+  t.addEventListener('click',function(){
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});
+    this.classList.add('on');
+    document.getElementById('htitle').textContent=this.dataset.city+' · 月度游客接待量热力图（2019-2024）';
+    renderHeat(this.dataset.city);
+  });
+});
+
+// Line
+var lc=echarts.init(document.getElementById('ch-line'));
+function gy(dd,yy){return dd.filter(function(d){return d.y===yy}).map(function(d){return d.vis})}
+lc.setOption({
+  tooltip:{trigger:'axis'},
+  legend:{data:['敦煌','张掖','兰州'],top:0,textStyle:{color:'#6b5e4a',fontSize:11}},
+  grid:{left:55,right:20,top:35,bottom:28},
+  xAxis:{type:'category',data:months,axisLabel:{color:'#8a7a60',fontSize:10},axisLine:{lineStyle:{color:'#ddd'}}},
+  yAxis:{type:'value',name:'万人次',axisLabel:{color:'#8a7a60'},splitLine:{lineStyle:{color:'rgba(0,0,0,0.05)'}}},
+  series:[
+    {name:'敦煌',type:'line',data:gy(dh,'2024'),smooth:true,symbol:'emptyCircle',symbolSize:7,lineStyle:{width:3,color:'#d4a050'},itemStyle:{color:'#d4a050'},areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(212,160,80,0.25)'},{offset:1,color:'rgba(212,160,80,0)'}])}},
+    {name:'张掖',type:'line',data:gy(zy,'2024'),smooth:true,symbol:'emptyCircle',symbolSize:7,lineStyle:{width:3,color:'#5b9bd5'},itemStyle:{color:'#5b9bd5'},areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(91,155,213,0.25)'},{offset:1,color:'rgba(91,155,213,0)'}])}},
+    {name:'兰州',type:'line',data:gy(lz,'2024'),smooth:true,symbol:'emptyCircle',symbolSize:7,lineStyle:{width:3,color:'#7bc47f'},itemStyle:{color:'#7bc47f'},areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(123,196,127,0.25)'},{offset:1,color:'rgba(123,196,127,0)'}])}}
+  ]
+});
+
+// Bar
+var bc=echarts.init(document.getElementById('ch-bar'));
+var bYrs=['2019','2020','2021','2022','2023','2024'];
+function as(dd,yy){var yd=dd.filter(function(d){return d.y===yy});if(!yd.length)return 0;return Math.round(yd.reduce(function(s,d){return s+d.spend},0)/yd.length)}
+bc.setOption({
+  tooltip:{trigger:'axis'},
+  legend:{data:['敦煌','张掖','兰州'],top:0,textStyle:{color:'#6b5e4a',fontSize:11}},
+  grid:{left:55,right:15,top:35,bottom:28},
+  xAxis:{type:'category',data:bYrs,axisLabel:{color:'#8a7a60'},axisLine:{lineStyle:{color:'#ddd'}}},
+  yAxis:{type:'value',name:'元/人',axisLabel:{color:'#8a7a60'},splitLine:{lineStyle:{color:'rgba(0,0,0,0.05)'}}},
+  series:[
+    {name:'敦煌',type:'bar',data:bYrs.map(function(y){return as(dh,y)}),barWidth:'36%',itemStyle:{borderRadius:[5,5,0,0],color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#e8c560'},{offset:1,color:'#b8860b'}])}},
+    {name:'张掖',type:'bar',data:bYrs.map(function(y){return as(zy,y)}),barWidth:'36%',itemStyle:{borderRadius:[5,5,0,0],color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#5b9bd5'},{offset:1,color:'#2e75b6'}])}},
+    {name:'兰州',type:'bar',data:bYrs.map(function(y){return as(lz,y)}),barWidth:'36%',itemStyle:{borderRadius:[5,5,0,0],color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#7bc47f'},{offset:1,color:'#3d9140'}])}}
+  ]
+});
+
+// Holiday
+var hc=echarts.init(document.getElementById('ch-holiday'));
+var holNames=['春节','五一','端午','暑期日均','国庆'];
+var holYrs=['2019','2020','2021','2022','2023','2024'];
+var holData=[
+  [285.6,42.5,152.3,105.6,358.5,412.5],
+  [568.5,185.3,625.8,412.5,758.5,825.6],
+  [352.5,105.6,425.6,312.5,528.5,585.6],
+  [1125.6,485.6,985.2,898.5,1258.5,1385.6],
+  [858.5,385.6,785.2,725.6,958.5,1025.6]
+];
+hc.setOption({
+  tooltip:{trigger:'axis'},
+  legend:{data:holNames,top:0,textStyle:{color:'#6b5e4a',fontSize:10},type:'scroll'},
+  grid:{left:55,right:20,top:40,bottom:28},
+  xAxis:{type:'category',data:holYrs,axisLabel:{color:'#8a7a60'},axisLine:{lineStyle:{color:'#ddd'}}},
+  yAxis:{type:'value',name:'万人次',axisLabel:{color:'#8a7a60'},splitLine:{lineStyle:{color:'rgba(0,0,0,0.05)'}}},
+  series:holNames.map(function(h,i){return {name:h,type:'bar',data:holData[i]}})
+});
+
+// Sankey
+var sk=echarts.init(document.getElementById('ch-sankey'));
+sk.setOption({
+  tooltip:{trigger:'item',triggerOn:'mousemove',formatter:function(p){return p.dataType==='edge'?p.data.source+' → '+p.data.target+'<br/>客流量：<b style="color:#b8860b">'+p.data.value+'</b> 万人':p.name}},
+  series:[{type:'sankey',layout:'none',emphasis:{focus:'adjacency'},nodeAlign:'left',
+    data:[
+      {name:'敦煌',itemStyle:{color:'#d4a050'}},{name:'张掖',itemStyle:{color:'#5b9bd5'}},{name:'兰州',itemStyle:{color:'#7bc47f'}},
+      {name:'甘肃周边',itemStyle:{color:'#ce93d8'}},{name:'华北',itemStyle:{color:'#ef5350'}},{name:'华东',itemStyle:{color:'#42a5f5'}},
+      {name:'华南',itemStyle:{color:'#26a69a'}},{name:'西南',itemStyle:{color:'#ff7043'}},{name:'华中',itemStyle:{color:'#ab47bc'}}
+    ],
+    links:[
+      {source:'敦煌',target:'甘肃周边',value:32.8},{source:'敦煌',target:'华北',value:72.3},{source:'敦煌',target:'华东',value:148.3},
+      {source:'敦煌',target:'华南',value:85.6},{source:'敦煌',target:'西南',value:38.5},{source:'敦煌',target:'华中',value:43.5},
+      {source:'张掖',target:'甘肃周边',value:366.8},{source:'张掖',target:'华北',value:28.5},{source:'张掖',target:'华东',value:20.5},
+      {source:'张掖',target:'西南',value:152.3},{source:'张掖',target:'华中',value:72.3},
+      {source:'兰州',target:'甘肃周边',value:125.8},{source:'兰州',target:'华北',value:201},{source:'兰州',target:'华东',value:247.3},
+      {source:'兰州',target:'华南',value:135.6},{source:'兰州',target:'西南',value:228.5},{source:'兰州',target:'华中',value:158.5}
+    ],
+    label:{color:'#6b5e4a',fontSize:10},lineStyle:{color:'gradient',curveness:0.5,opacity:0.35}
+  }]
+});
+
+// Pie
+var pc=echarts.init(document.getElementById('ch-pie'));
+pc.setOption({
+  tooltip:{trigger:'item',formatter:'{b}: {c}万人 ({d}%)'},
+  legend:{orient:'vertical',right:8,top:'center',textStyle:{color:'#6b5e4a',fontSize:10}},
+  series:[{type:'pie',radius:['42%','72%'],center:['35%','50%'],
+    label:{color:'#6b5e4a',fontSize:10,formatter:'{b}\n{d}%'},
+    itemStyle:{borderRadius:3,borderColor:'#fefcf7',borderWidth:2},
+    data:[
+      {value:416.1,name:'华东(江浙沪)',itemStyle:{color:'#42a5f5'}},{value:418.3,name:'西南(川渝)',itemStyle:{color:'#ff7043'}},
+      {value:525.4,name:'甘肃周边',itemStyle:{color:'#ce93d8'}},{value:301.8,name:'华北(京津冀)',itemStyle:{color:'#ef5350'}},
+      {value:274.3,name:'华中(豫鄂)',itemStyle:{color:'#ab47bc'}},{value:221.2,name:'华南(粤闽)',itemStyle:{color:'#26a69a'}}
+    ]
+  }]
+});
+
+// Reviews
+var rc=echarts.init(document.getElementById('ch-reviews'));
+var rYrs=[2019,2020,2021,2022,2023,2024];
+function tr(dd,yy){return dd.filter(function(d){return d.y===String(yy)}).reduce(function(s,d){return s+d.reviews},0)}
+function ar(dd,yy){var yd=dd.filter(function(d){return d.y===String(yy)});if(!yd.length)return 0;return Math.round(yd.reduce(function(s,d){return s+d.rate},0)/yd.length*10)/10}
+rc.setOption({
+  tooltip:{trigger:'axis'},
+  legend:{data:['敦煌点评','张掖点评','兰州点评','敦煌好评率','张掖好评率','兰州好评率'],top:0,textStyle:{color:'#6b5e4a',fontSize:9},type:'scroll'},
+  grid:{left:65,right:65,top:42,bottom:28},
+  xAxis:{type:'category',data:rYrs,axisLabel:{color:'#8a7a60'},axisLine:{lineStyle:{color:'#ddd'}}},
+  yAxis:[
+    {type:'value',name:'点评(条)',axisLabel:{color:'#8a7a60',formatter:function(v){return (v/10000).toFixed(0)+'万'}},splitLine:{lineStyle:{color:'rgba(0,0,0,0.05)'}}},
+    {type:'value',name:'好评率(%)',min:88,max:100,axisLabel:{color:'#8a7a60'}}
+  ],
+  series:[
+    {name:'敦煌点评',type:'bar',data:rYrs.map(function(y){return tr(dh,y)}),barWidth:'30%',itemStyle:{borderRadius:[3,3,0,0],color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#e8c560'},{offset:1,color:'#b8860b'}])}},
+    {name:'张掖点评',type:'bar',data:rYrs.map(function(y){return tr(zy,y)}),barWidth:'30%',itemStyle:{borderRadius:[3,3,0,0],color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#5b9bd5'},{offset:1,color:'#2e75b6'}])}},
+    {name:'兰州点评',type:'bar',data:rYrs.map(function(y){return tr(lz,y)}),barWidth:'30%',itemStyle:{borderRadius:[3,3,0,0],color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#7bc47f'},{offset:1,color:'#3d9140'}])}},
+    {name:'敦煌好评率',type:'line',yAxisIndex:1,data:rYrs.map(function(y){return ar(dh,y)}),smooth:true,lineStyle:{width:2.5,color:'#d4a050',type:'dashed'},symbol:'diamond',symbolSize:9,itemStyle:{color:'#d4a050'}},
+    {name:'张掖好评率',type:'line',yAxisIndex:1,data:rYrs.map(function(y){return ar(zy,y)}),smooth:true,lineStyle:{width:2.5,color:'#5b9bd5',type:'dashed'},symbol:'diamond',symbolSize:9,itemStyle:{color:'#5b9bd5'}},
+    {name:'兰州好评率',type:'line',yAxisIndex:1,data:rYrs.map(function(y){return ar(lz,y)}),smooth:true,lineStyle:{width:2.5,color:'#7bc47f',type:'dashed'},symbol:'diamond',symbolSize:9,itemStyle:{color:'#7bc47f'}}
+  ]
+});
+
+// Radar
+var rdc=echarts.init(document.getElementById('ch-radar'));
+rdc.setOption({
+  legend:{data:['敦煌','张掖','兰州'],bottom:0,textStyle:{color:'#6b5e4a',fontSize:11}},
+  radar:{center:['50%','45%'],radius:'58%',
+    indicator:[{name:'飞机',max:80},{name:'高铁/动车',max:60},{name:'自驾',max:70},{name:'大巴',max:40},{name:'火车(普速)',max:30}],
+    axisName:{color:'#8a7a60',fontSize:10},
+    splitArea:{areaStyle:{color:['rgba(212,160,80,0.02)','rgba(212,160,80,0.04)']}},
+    splitLine:{lineStyle:{color:'rgba(0,0,0,0.08)'}},
+    axisLine:{lineStyle:{color:'rgba(0,0,0,0.1)'}}
+  },
+  series:[{type:'radar',
+    data:[
+      {value:[68,25,8,18,10],name:'敦煌',areaStyle:{color:'rgba(212,160,80,0.2)'},lineStyle:{color:'#d4a050',width:2},itemStyle:{color:'#d4a050'},symbol:'circle',symbolSize:6},
+      {value:[15,42,62,22,18],name:'张掖',areaStyle:{color:'rgba(91,155,213,0.2)'},lineStyle:{color:'#5b9bd5',width:2},itemStyle:{color:'#5b9bd5'},symbol:'circle',symbolSize:6},
+      {value:[32,55,25,35,20],name:'兰州',areaStyle:{color:'rgba(123,196,127,0.2)'},lineStyle:{color:'#7bc47f',width:2},itemStyle:{color:'#7bc47f'},symbol:'circle',symbolSize:6}
+    ]
+  }]
+});
+
+// Recovery
+var rec=echarts.init(document.getElementById('ch-recovery'));
+rec.setOption({
+  tooltip:{trigger:'axis'},
+  legend:{data:['敦煌','张掖','兰州'],top:0,textStyle:{color:'#6b5e4a',fontSize:11}},
+  grid:{left:55,right:20,top:35,bottom:28},
+  xAxis:{type:'category',data:['2019','2020','2021','2022','2023','2024'],axisLabel:{color:'#8a7a60'},axisLine:{lineStyle:{color:'#ddd'}}},
+  yAxis:{type:'value',name:'恢复指数(2019=100)',axisLabel:{color:'#8a7a60'},splitLine:{lineStyle:{color:'rgba(0,0,0,0.05)'}}},
+  series:[
+    {name:'敦煌',type:'line',data:[100,52.9,87.0,72.6,108.4,112.3],smooth:true,symbol:'circle',symbolSize:9,lineStyle:{width:3,color:'#d4a050'},itemStyle:{color:'#d4a050'},markLine:{silent:true,data:[{yAxis:100,label:{formatter:'2019基准',color:'#8a7a60'}}],lineStyle:{color:'rgba(0,0,0,0.15)',type:'dotted'}}},
+    {name:'张掖',type:'line',data:[100,40.2,86.5,72.5,106.6,109.6],smooth:true,symbol:'circle',symbolSize:9,lineStyle:{width:3,color:'#5b9bd5'},itemStyle:{color:'#5b9bd5'}},
+    {name:'兰州',type:'line',data:[100,30.0,84.8,55.8,116.2,117.9],smooth:true,symbol:'circle',symbolSize:9,lineStyle:{width:3,color:'#7bc47f'},itemStyle:{color:'#7bc47f'}}
+  ]
+});
+
+// Resize
+window.addEventListener('resize',function(){
+  ht.resize();lc.resize();bc.resize();hc.resize();sk.resize();pc.resize();rc.resize();rdc.resize();rec.resize();
+});
+
+} // end initCharts
+
+// Start when ECharts is ready
+var checkTimer=setInterval(function(){
+  if(typeof echarts!=='undefined'){clearInterval(checkTimer);initCharts();}
+},100);
+// Also try immediately (CDN might cache)
+setTimeout(function(){if(typeof echarts!=='undefined')initCharts()},1000);
+
+// Reveal animation
+var obs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('on')});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el)});
+</script>
+</body>
+</html>
